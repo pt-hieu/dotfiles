@@ -4,14 +4,22 @@ local wezterm = require 'wezterm'
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
+-- OS detection
+local is_macos = wezterm.target_triple:find('darwin') ~= nil
+
+-- OS-aware modifier key (CMD on macOS, ALT on Linux/Windows)
+local mod = is_macos and 'CMD' or 'ALT'
+
 -- This is where you actually apply your config choices.
 
 -- For example, changing the initial geometry for new windows:
 config.initial_cols = 120
 config.initial_rows = 28
 
--- Set default working directory
-config.default_cwd = '/Users/brian.pham/Classified/interface.git'
+-- Set default working directory (macOS-specific path)
+if is_macos then
+  config.default_cwd = '/Users/brian.pham/Classified/interface.git'
+end
 
 -- or, changing the font size and color scheme.
 config.font_size = 14
@@ -62,7 +70,9 @@ config.inactive_pane_hsb = {
 
 -- Window opacity
 config.window_background_opacity = 0.8
-config.macos_window_background_blur = 10
+if is_macos then
+  config.macos_window_background_blur = 10
+end
 
 -- Window decorations
 config.window_decorations = "RESIZE"
@@ -181,48 +191,49 @@ config.keys = {
   {key="Enter", mods="SHIFT", action=wezterm.action{SendString="\x1b\r"}},
   {
     key = 'd',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
   },
   {
     key = 'D',
-    mods = 'CMD|SHIFT',
+    mods = mod .. '|SHIFT',
     action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
   },
+  -- Pane navigation
   {
     key = '[',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.ActivatePaneDirection 'Prev',
   },
   {
     key = ']',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.ActivatePaneDirection 'Next',
   },
-  -- macOS-style navigation
+  -- Navigation
   {
     key = 'LeftArrow',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.SendKey { key = 'Home' },
   },
   {
     key = 'RightArrow',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.SendKey { key = 'End' },
   },
   {
     key = 'UpArrow',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.ScrollToTop,
   },
   {
     key = 'DownArrow',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.ScrollToBottom,
   },
   {
     key = 'Backspace',
-    mods = 'CMD',
+    mods = mod,
     action = wezterm.action.SendKey { key = 'u', mods = 'CTRL' },
   },
   -- Pane resizing with META+h/j/k/l
@@ -247,5 +258,18 @@ config.keys = {
     action = wezterm.action.AdjustPaneSize { 'Right', 15 },
   },
 }
+
+-- Linux-only tab management bindings
+if not is_macos then
+  local linux_keys = {
+    { key = 't', mods = mod, action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
+    { key = 'w', mods = mod, action = wezterm.action.CloseCurrentTab { confirm = true } },
+    { key = ';', mods = mod, action = wezterm.action.ActivateTabRelative(-1) },
+    { key = "'", mods = mod, action = wezterm.action.ActivateTabRelative(1) },
+  }
+  for _, key in ipairs(linux_keys) do
+    table.insert(config.keys, key)
+  end
+end
 
 return config
