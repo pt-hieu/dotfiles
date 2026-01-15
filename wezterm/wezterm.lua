@@ -10,6 +10,10 @@ local is_macos = wezterm.target_triple:find('darwin') ~= nil
 -- OS-aware modifier key (CMD on macOS, ALT on Linux/Windows)
 local mod = is_macos and 'CMD' or 'ALT'
 
+-- Wayland support (disabled: nightly bug with window_decorations)
+-- See: https://github.com/wezterm/wezterm/issues/6673
+config.enable_wayland = false
+
 -- This is where you actually apply your config choices.
 
 -- For example, changing the initial geometry for new windows:
@@ -149,42 +153,44 @@ local function read_api_text()
   return 'Loading...'
 end
 
--- Initial fetch
-fetch_api_async()
+-- Status bar (macOS only)
+if is_macos then
+  -- Initial fetch
+  fetch_api_async()
 
--- Periodic refresh every 15 minutes
-local function schedule_fetch()
-  wezterm.time.call_after(900, function()
-    fetch_api_async()
-    schedule_fetch()
+  -- Periodic refresh every 15 minutes
+  local function schedule_fetch()
+    wezterm.time.call_after(900, function()
+      fetch_api_async()
+      schedule_fetch()
+    end)
+  end
+  schedule_fetch()
+
+  wezterm.on('update-right-status', function(window, pane)
+    local date = wezterm.strftime '%a %b %-d %H:%M'
+    local bat = ''
+
+    for _, b in ipairs(wezterm.battery_info()) do
+      bat = string.format('%.0f%%', b.state_of_charge * 100)
+    end
+
+    local current_api_text = read_api_text()
+
+    window:set_right_status(wezterm.format {
+      { Text = '  ' },
+      { Foreground = { Color = '#ffca85' } },
+      { Text = current_api_text },
+      { Text = ' | ' },
+      { Foreground = { Color = '#61ffca' } },
+      { Text = bat },
+      { Text = ' | ' },
+      { Foreground = { Color = '#a277ff' } },
+      { Text = date },
+      { Text = '  ' },
+    })
   end)
 end
-schedule_fetch()
-
--- Status bar
-wezterm.on('update-right-status', function(window, pane)
-  local date = wezterm.strftime '%a %b %-d %H:%M'
-  local bat = ''
-
-  for _, b in ipairs(wezterm.battery_info()) do
-    bat = string.format('%.0f%%', b.state_of_charge * 100)
-  end
-
-  local current_api_text = read_api_text()
-
-  window:set_right_status(wezterm.format {
-    { Text = '  ' },
-    { Foreground = { Color = '#ffca85' } },
-    { Text = current_api_text },
-    { Text = ' | ' },
-    { Foreground = { Color = '#61ffca' } },
-    { Text = bat },
-    { Text = ' | ' },
-    { Foreground = { Color = '#a277ff' } },
-    { Text = date },
-    { Text = '  ' },
-  })
-end)
 
 -- Finally, return the configuration to wezterm:
 config.keys = {
@@ -266,6 +272,24 @@ if not is_macos then
     { key = 'w', mods = mod, action = wezterm.action.CloseCurrentTab { confirm = true } },
     { key = ';', mods = mod, action = wezterm.action.ActivateTabRelative(-1) },
     { key = "'", mods = mod, action = wezterm.action.ActivateTabRelative(1) },
+    -- Copy/paste
+    { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
+    { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
+    { key = 'v', mods = 'CTRL', action = wezterm.action.PasteFrom 'Clipboard' },
+    -- Paste image as file path (for Claude Code)
+    {
+      key = 'v',
+      mods = 'CTRL|ALT',
+      action = wezterm.action_callback(function(window, pane)
+        local success, stdout, stderr = wezterm.run_child_process({
+          os.getenv('HOME') .. '/.local/bin/clip2path'
+        })
+        if success and stdout then
+          local text = stdout:gsub("[\r\n]+$", "")
+          pane:send_text(text)
+        end
+      end),
+    },
   }
   for _, key in ipairs(linux_keys) do
     table.insert(config.keys, key)

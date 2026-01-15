@@ -221,7 +221,7 @@ function link() {
 }
 
 function c() {
-        nvm exec --lts claude "$@"
+        claude "$@"
 }
 
 # User configuration
@@ -243,8 +243,7 @@ export PATH="$PATH:$HOME/.local/bin"
 # WezTerm (macOS only)
 [[ -d /Applications/WezTerm.app/Contents/MacOS ]] && export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
 
-# Research RAG tools
-export PATH="$PATH:$HOME/Classified/research-rag"
+export ENABLE_EXPERIMENTAL_MCP_CLI=true
 
 # pnpm (cross-platform)
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -299,3 +298,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 export BITBUCKET_USERNAME=brian.pham@drova.com
 export BITBUCKET_TOKEN=ATATT3xFfGF0BSb5zPi5XrGAfLJFQKwV6qmP7CMSGKCbiQ7YIL_nSXNTqvZlHtAcK_szm0uQXGkR3ppiKVXezodCjEPbl7W2uIyFlg_LQpKN4mZZJHjr_zUm_0JBKTzLa7BRX9smvJ18EpXZVYNHQk1qgJNR4xCWlYitmQSzhJETBKn5sP_XHKI=3513CEDD
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
