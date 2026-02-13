@@ -1,0 +1,276 @@
+# =============================================================================
+# P10k Instant Prompt (must stay at top)
+# =============================================================================
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# =============================================================================
+# Oh-My-Zsh
+# =============================================================================
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"
+plugins=(git vscode history)
+source $ZSH/oh-my-zsh.sh
+
+# =============================================================================
+# Environment & PATH
+# =============================================================================
+
+# NVM (cross-platform)
+export NVM_DIR="$HOME/.nvm"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+else
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+
+# pnpm (cross-platform)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# pipx
+export PATH="$PATH:$HOME/.local/bin"
+
+# WezTerm (macOS only)
+[[ -d /Applications/WezTerm.app/Contents/MacOS ]] && export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+
+# Research RAG tools
+export PATH="$PATH:$HOME/Classified/research-rag"
+
+# Claude Code MCP CLI
+export ENABLE_EXPERIMENTAL_MCP_CLI=true
+
+# =============================================================================
+# Cross-platform Plugins
+# =============================================================================
+
+# Powerlevel10k
+if [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]]; then
+  source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+elif [[ -f /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme ]]; then
+  source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+fi
+
+# Autosuggestions
+if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+elif [[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# Syntax highlighting (must be last plugin sourced)
+if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+# =============================================================================
+# Tool Init
+# =============================================================================
+
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init zsh)"
+fi
+
+if command -v eza &> /dev/null; then
+  alias ls="eza --icons=always"
+fi
+
+# =============================================================================
+# Shell Hooks
+# =============================================================================
+
+# Tab title with git branch
+precmd() {
+  local branch=$(git branch --show-current 2>/dev/null)
+  if [[ -n $branch ]]; then
+    echo -ne "\033]0;$(basename "$PWD") [$branch]\007"
+  else
+    echo -ne "\033]0;$(basename "$PWD")\007"
+  fi
+}
+
+# =============================================================================
+# Functions: Git
+# =============================================================================
+
+function find_branch() {
+  git branch -l \*$1\* | xargs
+}
+
+function br() {
+  if [ ! -z "$1" ]; then
+    find_branch "$1"
+  else
+    git rev-parse --abbrev-ref HEAD
+  fi
+}
+
+function aa() {
+  git add .
+}
+
+function cm() {
+  BRANCH_NAME=$(br)
+  JIRA_TICKET=$(echo $BRANCH_NAME | grep -oE '[A-Z]+-[0-9]+')
+  if [ ! -z "$JIRA_TICKET" ]; then
+    git commit -nm "$JIRA_TICKET $@"
+  else
+    git commit -nm "$@"
+  fi
+}
+
+function cmm() {
+  git commit --amend --no-edit -n
+}
+
+function co() {
+  BRANCH=$(find_branch "$1")
+  git checkout "$BRANCH"
+}
+
+function new() {
+  git checkout -b "$@"
+}
+
+function push() {
+  git push origin $(br) "$@"
+}
+
+function pull() {
+  git pull origin $(br) "$@"
+}
+
+function mm() {
+  git pull origin master
+}
+
+# =============================================================================
+# Functions: Dev Tools
+# =============================================================================
+
+function p() {
+  pnpm "$@"
+}
+
+function nx() {
+  pnpm nx "$@"
+}
+
+function t() {
+  nx test "$1" --silent --testFiles="$2" $3
+}
+
+function gqlgen() {
+  nx run graphql-schema:codegen
+}
+
+function gqlgen:public() {
+  nx run graphql-schema:codegen:public-schema
+}
+
+# =============================================================================
+# Functions: Worktrees
+# =============================================================================
+
+function wt() {
+  git worktree add -b $1 $1 $2
+}
+
+function wtrm() {
+  WORKTREE_PATH=$(git worktree list | grep "$1" | awk '{print $1}')
+  if [ -n "$WORKTREE_PATH" ]; then
+    bash "$HOME/Classified/interface.git/scripts/cleanup-worktree.sh" "$WORKTREE_PATH"
+  fi
+  git worktree remove $1
+}
+
+function link() {
+  bash "$HOME/Classified/interface.git/scripts/setup-worktree.sh" "$@"
+}
+
+# =============================================================================
+# Functions: AI
+# =============================================================================
+
+function c() {
+  EDITOR=nvim claude --allow-dangerously-skip-permissions "$@"
+}
+
+function prototype() {
+  claude \
+    --chrome \
+    --settings .claude/profiles/prototype/settings.json \
+    --append-system-prompt "$(cat .claude/profiles/prototype/PROTOTYPE.md)" \
+    "$@"
+}
+
+function codex-prototype() {
+  codex \
+    --config .codex/profiles/prototype/config.toml \
+    --project-doc .codex/profiles/prototype/AGENTS.md \
+    "$@"
+}
+
+# =============================================================================
+# Functions: Utilities
+# =============================================================================
+
+function cd() {
+  if [[ -o interactive ]] && command -v __zoxide_z &> /dev/null; then
+    z "$@"
+  else
+    builtin cd "$@"
+  fi
+}
+
+function q() {
+  exit
+}
+
+function cls() {
+  clear
+}
+
+function zsh() {
+  vim ~/.zshrc
+}
+
+function n() {
+  nvim .
+}
+
+function kb() {
+  kubectl "$@"
+}
+
+function redis() {
+  redis-server ~/redis.conf
+}
+
+# =============================================================================
+# Aliases
+# =============================================================================
+
+alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+
+# =============================================================================
+# P10k Config (must stay at bottom)
+# =============================================================================
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
