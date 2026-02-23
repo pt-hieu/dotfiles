@@ -232,6 +232,10 @@ function codex-prototype() {
 # Functions: Utilities
 # =============================================================================
 
+function wp() {
+	warp-cli "$@"
+}
+
 function cd() {
   if [[ -o interactive ]] && command -v __zoxide_z &> /dev/null; then
     z "$@"
