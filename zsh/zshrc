@@ -49,9 +49,6 @@ export PATH="$PATH:$HOME/.local/bin"
 # WezTerm (macOS only)
 [[ -d /Applications/WezTerm.app/Contents/MacOS ]] && export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
 
-# Research RAG tools
-export PATH="$PATH:$HOME/Classified/research-rag"
-
 # Claude Code MCP CLI
 export ENABLE_EXPERIMENTAL_MCP_CLI=true
 
@@ -221,13 +218,6 @@ function prototype() {
     "$@"
 }
 
-function codex-prototype() {
-  codex \
-    --config .codex/profiles/prototype/config.toml \
-    --project-doc .codex/profiles/prototype/AGENTS.md \
-    "$@"
-}
-
 # =============================================================================
 # Functions: Utilities
 # =============================================================================
@@ -253,7 +243,7 @@ function cls() {
 }
 
 function zsh() {
-  vim ~/.zshrc
+  nvim ~/.zshrc
 }
 
 function n() {
@@ -267,12 +257,6 @@ function kb() {
 function redis() {
   redis-server ~/redis.conf
 }
-
-# =============================================================================
-# Aliases
-# =============================================================================
-
-alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
 
 # =============================================================================
 # P10k Config (must stay at bottom)
