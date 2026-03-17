@@ -202,6 +202,33 @@ function link() {
   bash "$HOME/Classified/interface.git/scripts/setup-worktree.sh" "$@"
 }
 
+function ticket() {
+  local branch="$1"
+  local base="${2:-master}"
+  local GIT_ROOT="$HOME/Classified/interface.git"
+
+  if [ -z "$branch" ]; then
+    echo "Usage: ticket <branch-name> [base-branch]"
+    return 1
+  fi
+
+  if [ -d "$GIT_ROOT/$branch" ]; then
+    echo "Worktree '$branch' already exists. cd-ing into it."
+    cd "$GIT_ROOT/$branch"
+    return 0
+  fi
+
+  echo "Creating worktree '$branch' from '$base'..."
+  git -C "$GIT_ROOT" worktree add -b "$branch" "$GIT_ROOT/$branch" "$base" || return 1
+
+  cd "$GIT_ROOT/$branch"
+
+  bash "$GIT_ROOT/scripts/setup-worktree.sh"
+
+  echo ""
+  echo "Ready. Run 'c' to start Claude Code."
+}
+
 # =============================================================================
 # Functions: AI
 # =============================================================================
@@ -256,6 +283,14 @@ function kb() {
 
 function redis() {
   redis-server ~/redis.conf
+}
+
+function chrome-debug() {
+  /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+    --remote-debugging-port=9222 \
+    --user-data-dir="$HOME/chrome-debug-profile" \
+    2>/dev/null &
+  disown
 }
 
 # =============================================================================

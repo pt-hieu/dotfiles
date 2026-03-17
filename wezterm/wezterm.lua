@@ -73,7 +73,7 @@ config.inactive_pane_hsb = {
 }
 
 -- Window opacity
-config.window_background_opacity = 1
+config.window_background_opacity = 0.95
 if is_macos then
 	config.macos_window_background_blur = 10
 end
