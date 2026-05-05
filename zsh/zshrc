@@ -19,25 +19,10 @@ fi
 # Environment & PATH
 # =============================================================================
 
-# NVM (lazy-loaded — defers ~500ms of startup until first node/npm/npx/nvm call)
-export NVM_DIR="$HOME/.nvm"
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  NVM_SCRIPT="/opt/homebrew/opt/nvm/nvm.sh"
-  NVM_COMPLETION="/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-else
-  NVM_SCRIPT="$NVM_DIR/nvm.sh"
-  NVM_COMPLETION="$NVM_DIR/bash_completion"
+# mise (Node/Python/etc version manager — replaces nvm, ~instant startup)
+if command -v mise &> /dev/null; then
+  eval "$(mise activate zsh)"
 fi
-
-_nvm_load() {
-  unset -f nvm node npm npx _nvm_load
-  [ -s "$NVM_SCRIPT" ] && \. "$NVM_SCRIPT"
-  [ -s "$NVM_COMPLETION" ] && \. "$NVM_COMPLETION"
-}
-nvm()  { _nvm_load; nvm "$@"; }
-node() { _nvm_load; node "$@"; }
-npm()  { _nvm_load; npm "$@"; }
-npx()  { _nvm_load; npx "$@"; }
 
 export EDITOR="nvim"
 export CLAUDE_CODE_NO_FLICKER="1"
