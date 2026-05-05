@@ -246,7 +246,6 @@ function drovaclaude() {
 
 function prototype() {
   claude \
-    --chrome \
     --settings .claude/profiles/prototype/settings.json \
     --append-system-prompt "$(cat .claude/profiles/prototype/PROTOTYPE.md)" \
     "$@"
