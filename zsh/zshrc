@@ -27,6 +27,9 @@ else
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 fi
 
+export EDITOR="nvim"
+export CLAUDE_CODE_NO_FLICKER="1"
+
 # pnpm (cross-platform)
 if [[ "$OSTYPE" == "darwin"* ]]; then
   export PNPM_HOME="$HOME/Library/pnpm"
@@ -234,7 +237,7 @@ function ticket() {
 # =============================================================================
 
 function c() {
-  EDITOR=nvim claude --allow-dangerously-skip-permissions "$@"
+  claude --allow-dangerously-skip-permissions "$@"
 }
 
 function prototype() {
