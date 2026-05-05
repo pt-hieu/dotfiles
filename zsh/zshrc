@@ -240,6 +240,10 @@ function c() {
   claude --allow-dangerously-skip-permissions "$@"
 }
 
+function drovaclaude() {
+	CLAUDE_CONFIG_DIR=~/.claude-drova claude "$@"
+}
+
 function prototype() {
   claude \
     --chrome \
