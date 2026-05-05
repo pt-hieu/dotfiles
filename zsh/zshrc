@@ -292,7 +292,7 @@ function redis() {
 }
 
 function chrome-debug() {
-  /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  /Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary \
     --remote-debugging-port=9222 \
     --user-data-dir="$HOME/chrome-debug-profile" \
     2>/dev/null &
