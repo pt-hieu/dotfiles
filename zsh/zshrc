@@ -212,6 +212,13 @@ function ticket() {
     return 1
   fi
 
+  # Accept a full "git checkout -b <branch>" string and extract the branch name
+  branch="${branch## }"
+  if [[ "$branch" == "git checkout -b "* ]]; then
+    branch="${branch#git checkout -b }"
+    branch="${branch%% *}"
+  fi
+
   if [ -d "$GIT_ROOT/$branch" ]; then
     echo "Worktree '$branch' already exists. cd-ing into it."
     cd "$GIT_ROOT/$branch"
