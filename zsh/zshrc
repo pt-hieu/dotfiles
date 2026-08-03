@@ -315,3 +315,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+# bun completions
+[ -s "/private/tmp/bun-latest/_bun" ] && source "/private/tmp/bun-latest/_bun"
