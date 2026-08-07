@@ -20,11 +20,6 @@ config.enable_wayland = false
 config.initial_cols = 120
 config.initial_rows = 28
 
--- Set default working directory (macOS-specific path)
-if is_macos then
-	config.default_cwd = "/Users/brian.pham/Classified/interface.git"
-end
-
 -- or, changing the font size and color scheme.
 config.font_size = 14
 

@@ -191,49 +191,7 @@ function wt() {
 }
 
 function wtrm() {
-  WORKTREE_PATH=$(git worktree list | grep "$1" | awk '{print $1}')
-  if [ -n "$WORKTREE_PATH" ]; then
-    bash "$HOME/Classified/interface.git/scripts/cleanup-worktree.sh" "$WORKTREE_PATH"
-  fi
   git worktree remove $1
-}
-
-function link() {
-  bash "$HOME/Classified/interface.git/scripts/setup-worktree.sh" "$@"
-}
-
-function ticket() {
-  local branch="$1"
-  local base="${2:-master}"
-  local GIT_ROOT="$HOME/Classified/interface.git"
-
-  if [ -z "$branch" ]; then
-    echo "Usage: ticket <branch-name> [base-branch]"
-    return 1
-  fi
-
-  # Accept a full "git checkout -b <branch>" string and extract the branch name
-  branch="${branch## }"
-  if [[ "$branch" == "git checkout -b "* ]]; then
-    branch="${branch#git checkout -b }"
-    branch="${branch%% *}"
-  fi
-
-  if [ -d "$GIT_ROOT/$branch" ]; then
-    echo "Worktree '$branch' already exists. cd-ing into it."
-    cd "$GIT_ROOT/$branch"
-    return 0
-  fi
-
-  echo "Creating worktree '$branch' from '$base'..."
-  git -C "$GIT_ROOT" worktree add -b "$branch" "$GIT_ROOT/$branch" "$base" || return 1
-
-  cd "$GIT_ROOT/$branch"
-
-  bash "$GIT_ROOT/scripts/setup-worktree.sh"
-
-  echo ""
-  echo "Ready. Run 'c' to start Claude Code."
 }
 
 # =============================================================================
@@ -242,10 +200,6 @@ function ticket() {
 
 function c() {
   claude --allow-dangerously-skip-permissions "$@"
-}
-
-function drovaclaude() {
-	CLAUDE_CONFIG_DIR=~/.claude-drova claude "$@"
 }
 
 function prototype() {
@@ -258,10 +212,6 @@ function prototype() {
 # =============================================================================
 # Functions: Utilities
 # =============================================================================
-
-function wp() {
-	warp-cli "$@"
-}
 
 function cd() {
   if [[ -o interactive ]] && command -v __zoxide_z &> /dev/null; then
@@ -307,14 +257,3 @@ function chrome-debug() {
 # P10k Config (must stay at bottom)
 # =============================================================================
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# pnpm
-export PNPM_HOME="/Users/brian.pham/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
-
-# bun completions
-[ -s "/private/tmp/bun-latest/_bun" ] && source "/private/tmp/bun-latest/_bun"

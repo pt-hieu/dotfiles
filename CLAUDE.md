@@ -35,7 +35,7 @@ Shell config with cross-platform support (macOS/Linux branching for paths and pl
 7. **Functions** — git shortcuts, dev tools, worktrees, AI launchers, utilities
 8. **P10k config** (must stay at bottom)
 
-Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm`/`link` (worktree management), `c` (Claude Code launcher), `n` (nvim).
+Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm` (worktree management), `c` (Claude Code launcher), `n` (nvim).
 
 ### ghostty/config
 
