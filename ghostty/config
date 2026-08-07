@@ -1,0 +1,72 @@
+# Ghostty config — ported from wezterm/wezterm.lua
+# Docs: ghostty +show-config --default --docs
+
+# Window geometry (cells)
+window-width = 120
+window-height = 28
+
+# Font — brew install --cask font-cascadia-code-nf
+# The Nerd Font build is used so powerlevel10k's glyphs render. Italics ship as
+# a separate family, so they must be named explicitly.
+font-family = Cascadia Code NF
+font-family-italic = Cascadia Code NF Italic
+font-family-bold-italic = Cascadia Code NF Italic
+font-size = 14
+
+# Aura Dark — custom scheme copied from the wezterm color_schemes table.
+# (There is a built-in `theme = Aura`, but it is a different palette.)
+background = #15141b
+foreground = #edecee
+
+palette = 0=#15141b
+palette = 1=#ff6767
+palette = 2=#61ffca
+palette = 3=#ffca85
+palette = 4=#a277ff
+palette = 5=#a277ff
+palette = 6=#61ffca
+palette = 7=#edecee
+palette = 8=#6d6d6d
+palette = 9=#ff6767
+palette = 10=#61ffca
+palette = 11=#ffca85
+palette = 12=#a277ff
+palette = 13=#a277ff
+palette = 14=#61ffca
+palette = 15=#edecee
+
+cursor-color = #a277ff
+# Matches wezterm's cursor_fg; the glyph under the block cursor is hidden.
+# Set to #15141b if you want it readable instead.
+cursor-text = #a277ff
+
+selection-background = #29263c
+selection-foreground = #edecee
+
+# Splits — wezterm desaturated the inactive pane (inactive_pane_hsb);
+# ghostty can only dim it.
+split-divider-color = #a277ff
+unfocused-split-opacity = 0.85
+
+# Window
+background-opacity = 0.95
+background-blur = 10
+macos-titlebar-style = tabs
+
+# Keybinds
+# Already ghostty defaults, no need to redeclare: cmd+d / cmd+shift+d split
+# right/down, cmd+[ / cmd+] focus prev/next split, cmd+left / cmd+right send
+# ^A / ^E, cmd+backspace sends ^U, cmd+t new tab, cmd+w close.
+
+# Newline without submitting (Claude Code, REPLs)
+keybind = shift+enter=text:\x1b\r
+
+# Scrollback jumps — override ghostty's default jump_to_prompt
+keybind = super+up=scroll_to_top
+keybind = super+down=scroll_to_bottom
+
+# Pane resizing with alt+hjkl
+keybind = alt+h=resize_split:left,15
+keybind = alt+j=resize_split:down,15
+keybind = alt+k=resize_split:up,15
+keybind = alt+l=resize_split:right,15

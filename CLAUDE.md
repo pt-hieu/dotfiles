@@ -13,6 +13,7 @@ Personal dotfiles for Brian Pham. Manages shell, terminal, and git configuration
 ```
 
 Symlink targets:
+- `ghostty/config` → `~/.config/ghostty/config`
 - `wezterm/wezterm.lua` → `~/.wezterm.lua`
 - `zsh/zshrc` → `~/.zshrc`
 - `zsh/p10k.zsh` → `~/.p10k.zsh`
@@ -35,6 +36,14 @@ Shell config with cross-platform support (macOS/Linux branching for paths and pl
 8. **P10k config** (must stay at bottom)
 
 Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm`/`link` (worktree management), `c` (Claude Code launcher), `n` (nvim).
+
+### ghostty/config
+
+Primary terminal (macOS). Ported from `wezterm.lua`: Aura Dark palette, Cascadia Code NF at 14pt, 120x28 geometry, 0.95 opacity + blur, and the split/scroll/resize keybinds. Ghostty's own macOS defaults already cover `cmd+d`/`cmd+shift+d` splits, `cmd+[`/`cmd+]` navigation, and the `cmd+arrow`/`cmd+backspace` line editing, so only overrides are declared.
+
+Ghostty has no scripting layer, so the status bar (weather/battery/date) and tab-bar colors have no equivalent. Validate changes with `ghostty +validate-config`.
+
+Requires `brew install --cask font-cascadia-code-nf` (Nerd Font build, needed for powerlevel10k glyphs). Italics live in a separate `Cascadia Code NF Italic` family and must be named explicitly.
 
 ### wezterm/wezterm.lua
 
