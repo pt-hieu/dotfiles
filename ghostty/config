@@ -1,10 +1,6 @@
 # Ghostty config — ported from wezterm/wezterm.lua
 # Docs: ghostty +show-config --default --docs
 
-# Window geometry (cells)
-window-width = 120
-window-height = 28
-
 # Font — brew install --cask font-cascadia-code-nf
 # The Nerd Font build is used so powerlevel10k's glyphs render. Italics ship as
 # a separate family, so they must be named explicitly.
@@ -49,6 +45,8 @@ split-divider-color = #a277ff
 unfocused-split-opacity = 0.85
 
 # Window
+window-save-state = never
+
 background-opacity = 0.95
 background-blur = 10
 macos-titlebar-style = tabs
