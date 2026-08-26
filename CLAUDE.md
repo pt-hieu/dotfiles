@@ -17,6 +17,7 @@ Symlink targets:
 - `zsh/zshrc` → `~/.zshrc`
 - `zsh/p10k.zsh` → `~/.p10k.zsh`
 - `git/gitconfig` → `~/.gitconfig`
+- `scripts/claude-idle-sleep.sh` → `~/.local/bin/claude-idle-sleep`
 
 ## Architecture
 
@@ -34,7 +35,7 @@ Shell config with cross-platform support (macOS/Linux branching for paths and pl
 7. **Functions** — git shortcuts, dev tools, worktrees, AI launchers, utilities
 8. **P10k config** (must stay at bottom)
 
-Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm`/`link` (worktree management), `c` (Claude Code launcher), `n` (nvim).
+Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm`/`link` (worktree management), `c` (Claude Code launcher), `n` (nvim), `zzz` (sleep when Claude Code is idle).
 
 ### wezterm/wezterm.lua
 
@@ -49,6 +50,32 @@ Terminal emulator config. Cross-platform (CMD on macOS, ALT on Linux). Features:
 ### git/gitconfig
 
 Minimal — user identity and GitHub credential helper via `gh`.
+
+### scripts/claude-idle-sleep.sh
+
+Sleeps the Mac once every Claude Code CLI session is back at its prompt. macOS
+only — it needs `pmset`, `ioreg` and BSD `stat`. Modes: `check` (report only,
+the default), `sleep` (sleep once if idle), `watch [minutes]` (poll, default
+15). Exit codes: `0` idle, `1` busy, `2` already asleep.
+
+Three guards must all pass before it sleeps:
+
+1. **No working session.** Claude Code holds a `caffeinate` child process for as
+   long as it is working and kills it on return to the prompt. A `claude` PID
+   with no `caffeinate` child is idle. This is the primary signal.
+2. **Transcript quiet.** No write under `~/.claude/projects` for
+   `--quiet-minutes` (default 10).
+3. **User away.** No keyboard or mouse input for `--user-idle` seconds
+   (default 300).
+
+Two details that are easy to get wrong:
+
+- The session running the check excludes its own PID (`CLAUDE_PID`) and its own
+  transcript (`CLAUDE_CODE_SESSION_ID`), or it vetoes its own sleep. `lsof`
+  cannot find the transcript — Claude Code closes the file between appends.
+- The already-asleep check parses `pmset -g log`, which takes ~7s, so it only
+  runs after the cheap guards pass. It exists because a scheduled DarkWake
+  (maintenance, RTC, push) would otherwise be cut short by another sleep.
 
 ## Conventions
 

@@ -13,4 +13,8 @@ ln -sf "$DOTFILES_DIR/zsh/p10k.zsh" ~/.p10k.zsh
 # Git
 ln -sf "$DOTFILES_DIR/git/gitconfig" ~/.gitconfig
 
+# Scripts
+mkdir -p ~/.local/bin
+ln -sf "$DOTFILES_DIR/scripts/claude-idle-sleep.sh" ~/.local/bin/claude-idle-sleep
+
 echo "Dotfiles installed!"

@@ -255,6 +255,19 @@ function prototype() {
     "$@"
 }
 
+# Sleep the Mac once every Claude Code session is done.
+#   zzz          watch every 15 minutes, sleep when idle
+#   zzz 30       watch every 30 minutes
+#   zzz check    report once, change nothing
+#   zzz now      sleep straight away if idle
+function zzz() {
+  case "${1:-}" in
+    check) shift; claude-idle-sleep check "$@" ;;
+    now)   shift; claude-idle-sleep sleep "$@" ;;
+    *)     claude-idle-sleep watch "$@" ;;
+  esac
+}
+
 # =============================================================================
 # Functions: Utilities
 # =============================================================================
