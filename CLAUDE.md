@@ -18,6 +18,7 @@ Symlink targets:
 - `zsh/p10k.zsh` → `~/.p10k.zsh`
 - `git/gitconfig` → `~/.gitconfig`
 - `scripts/claude-idle-sleep.sh` → `~/.local/bin/claude-idle-sleep`
+- `scripts/cpu-hogs.sh` → `~/.local/bin/cpu-hogs`
 
 ## Architecture
 
@@ -35,7 +36,7 @@ Shell config with cross-platform support (macOS/Linux branching for paths and pl
 7. **Functions** — git shortcuts, dev tools, worktrees, AI launchers, utilities
 8. **P10k config** (must stay at bottom)
 
-Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm`/`link` (worktree management), `c` (Claude Code launcher), `n` (nvim), `zzz` (sleep when Claude Code is idle).
+Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm`/`link` (worktree management), `c` (Claude Code launcher), `n` (nvim), `zzz` (sleep when Claude Code is idle), `hogs` (find/kill runaway CPU processes).
 
 ### wezterm/wezterm.lua
 
@@ -76,6 +77,28 @@ Two details that are easy to get wrong:
 - The already-asleep check parses `pmset -g log`, which takes ~7s, so it only
   runs after the cheap guards pass. It exists because a scheduled DarkWake
   (maintenance, RTC, push) would otherwise be cut short by another sleep.
+
+### scripts/cpu-hogs.sh
+
+Finds and kills runaway CPU processes — the orphans a dead tool session leaves
+spinning. Portable across macOS and Linux; every duration format `ps` emits is
+parsed. Modes: `check` (report only, the default), `kill [pid...]`. Exit codes:
+`0` clean, `1` runaways found.
+
+It samples accumulated CPU time twice `--sample` seconds apart and reports the
+difference. `ps %cpu` is a decaying average that stays high for minutes after a
+process goes quiet, which would report hogs that had already stopped.
+
+Auto-kill is deliberately narrow. A process is RUNAWAY only when it is yours,
+orphaned to init, holds no tty, is a shell or interpreter, and is older than
+`--min-age`. The shell-or-interpreter test is the one that is easy to drop and
+must not be: launchd parents every GUI app, so orphanhood plus no-tty describes
+Chrome exactly as well as it describes a stranded `zsh`. Everything else is
+reported as BUSY and needs an explicit pid or `--all`.
+
+Kills with TERM, then KILL for whatever ignores it. The script never touches its
+own ancestor chain — killing an ancestor takes down the calling shell and its
+terminal.
 
 ## Conventions
 

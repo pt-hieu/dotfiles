@@ -316,6 +316,22 @@ function chrome-debug() {
   disown
 }
 
+# Find and kill runaway CPU processes — the orphans a dead tool session leaves
+# spinning. Auto-kill only ever touches your own orphaned shells, never a GUI
+# app; anything else it finds must be killed by pid.
+#   hogs            report what is really burning CPU right now
+#   hogs kill       kill the runaways, after confirming
+#   hogs kill -y    kill them without the prompt
+#   hogs kill 123   kill exactly that pid, whatever the verdict
+#   hogs all        also list busy processes that still have a live parent
+function hogs() {
+  case "${1:-}" in
+    kill) shift; cpu-hogs kill "$@" ;;
+    all)  shift; cpu-hogs check --all "$@" ;;
+    *)    cpu-hogs check "$@" ;;
+  esac
+}
+
 # =============================================================================
 # P10k Config (must stay at bottom)
 # =============================================================================

@@ -16,5 +16,6 @@ ln -sf "$DOTFILES_DIR/git/gitconfig" ~/.gitconfig
 # Scripts
 mkdir -p ~/.local/bin
 ln -sf "$DOTFILES_DIR/scripts/claude-idle-sleep.sh" ~/.local/bin/claude-idle-sleep
+ln -sf "$DOTFILES_DIR/scripts/cpu-hogs.sh" ~/.local/bin/cpu-hogs
 
 echo "Dotfiles installed!"
