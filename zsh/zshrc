@@ -209,6 +209,19 @@ function prototype() {
     "$@"
 }
 
+# Sleep the Mac once every Claude Code session is done.
+#   zzz          watch every 15 minutes, sleep when idle
+#   zzz 30       watch every 30 minutes
+#   zzz check    report once, change nothing
+#   zzz now      sleep straight away if idle
+function zzz() {
+  case "${1:-}" in
+    check) shift; claude-idle-sleep check "$@" ;;
+    now)   shift; claude-idle-sleep sleep "$@" ;;
+    *)     claude-idle-sleep watch "$@" ;;
+  esac
+}
+
 # =============================================================================
 # Functions: Utilities
 # =============================================================================
@@ -251,6 +264,22 @@ function chrome-debug() {
     --user-data-dir="$HOME/chrome-debug-profile" \
     2>/dev/null &
   disown
+}
+
+# Find and kill runaway CPU processes — the orphans a dead tool session leaves
+# spinning. Auto-kill only ever touches your own orphaned shells, never a GUI
+# app; anything else it finds must be killed by pid.
+#   hogs            report what is really burning CPU right now
+#   hogs kill       kill the runaways, after confirming
+#   hogs kill -y    kill them without the prompt
+#   hogs kill 123   kill exactly that pid, whatever the verdict
+#   hogs all        also list busy processes that still have a live parent
+function hogs() {
+  case "${1:-}" in
+    kill) shift; cpu-hogs kill "$@" ;;
+    all)  shift; cpu-hogs check --all "$@" ;;
+    *)    cpu-hogs check "$@" ;;
+  esac
 }
 
 # =============================================================================
