@@ -32,10 +32,11 @@ Shell config with cross-platform support (macOS/Linux branching for paths and pl
 2. **Oh-My-Zsh** setup (plugins: git, vscode, history)
 3. **Environment/PATH** — nvm, pnpm, bun, pipx, WezTerm CLI
 4. **Plugins** — powerlevel10k, zsh-autosuggestions, zsh-syntax-highlighting (must be last)
-5. **Tool init** — zoxide (`cd` override), eza (`ls` override)
-6. **Shell hooks** — tab title with git branch
-7. **Functions** — git shortcuts, dev tools, worktrees, AI launchers, utilities
-8. **P10k config** (must stay at bottom)
+5. **Key bindings** — vi mode (`bindkey -v`) with `KEYTIMEOUT=1`, set after plugins so their own bindkey calls do not win
+6. **Tool init** — zoxide (`cd` override), eza (`ls` override)
+7. **Shell hooks** — tab title with git branch
+8. **Functions** — git shortcuts, dev tools, worktrees, AI launchers, utilities
+9. **P10k config** (must stay at bottom)
 
 Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `t` (nx test), `gqlgen` (GraphQL codegen), `wt`/`wtrm` (worktree management), `c` (Claude Code launcher), `n` (nvim), `zzz` (sleep when Claude Code is idle), `hogs` (find/kill runaway CPU processes).
 

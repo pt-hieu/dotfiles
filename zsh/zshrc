@@ -78,6 +78,19 @@ elif [[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.z
 fi
 
 # =============================================================================
+# Key Bindings
+# =============================================================================
+
+# Vi mode (set after plugins so their bindkey calls do not override it)
+bindkey -v
+
+# Esc is the first byte of every arrow/function-key sequence, so ZLE waits
+# KEYTIMEOUT hundredths of a second to see whether more bytes follow before
+# deciding Esc was pressed alone. The default 40 makes insert -> normal feel
+# laggy; 1 still catches real sequences, which arrive in a single burst.
+KEYTIMEOUT=1
+
+# =============================================================================
 # Tool Init
 # =============================================================================
 
