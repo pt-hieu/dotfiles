@@ -179,48 +179,9 @@ function p() {
   pnpm "$@"
 }
 
-function nx() {
-  pnpm nx "$@"
-}
-
-function t() {
-  nx test "$1" --silent --testFiles="$2" $3
-}
-
-function gqlgen() {
-  nx run graphql-schema:codegen
-}
-
-function gqlgen:public() {
-  nx run graphql-schema:codegen:public-schema
-}
-
-# =============================================================================
-# Functions: Worktrees
-# =============================================================================
-
-function wt() {
-  git worktree add -b $1 $1 $2
-}
-
-function wtrm() {
-  git worktree remove $1
-}
-
 # =============================================================================
 # Functions: AI
 # =============================================================================
-
-function c() {
-  claude --allow-dangerously-skip-permissions "$@"
-}
-
-function prototype() {
-  claude \
-    --settings .claude/profiles/prototype/settings.json \
-    --append-system-prompt "$(cat .claude/profiles/prototype/PROTOTYPE.md)" \
-    "$@"
-}
 
 # Sleep the Mac once every Claude Code session is done.
 #   zzz          watch every 15 minutes, sleep when idle
@@ -261,22 +222,6 @@ function zsh() {
 
 function n() {
   nvim .
-}
-
-function kb() {
-  kubectl "$@"
-}
-
-function redis() {
-  redis-server ~/redis.conf
-}
-
-function chrome-debug() {
-  /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-    --remote-debugging-port=9222 \
-    --user-data-dir="$HOME/chrome-debug-profile" \
-    2>/dev/null &
-  disown
 }
 
 # Find and kill runaway CPU processes — the orphans a dead tool session leaves
