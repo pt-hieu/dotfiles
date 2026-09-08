@@ -30,7 +30,7 @@ Each tool gets its own directory with a single config file. The install script s
 Shell config with cross-platform support (macOS/Linux branching for paths and plugins). Sections in order:
 1. **P10k instant prompt** (must stay at top)
 2. **Oh-My-Zsh** setup (plugins: git, vscode, history)
-3. **Environment/PATH** — nvm, pnpm, bun, pipx, WezTerm CLI
+3. **Environment/PATH** — mise, pnpm, bun, pipx, WezTerm CLI
 4. **Plugins** — powerlevel10k, zsh-autosuggestions, zsh-syntax-highlighting (must be last)
 5. **Key bindings** — vi mode (`bindkey -v`) with `KEYTIMEOUT=1`, set after plugins so their own bindkey calls do not win
 6. **Tool init** — zoxide (`cd` override), eza (`ls` override)
