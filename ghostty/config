@@ -47,6 +47,12 @@ unfocused-split-opacity = 0.85
 # Window
 window-save-state = never
 
+# Cells rarely divide evenly into the window; balance splits the leftover
+# pixels across both edges instead of piling them on the right and bottom.
+window-padding-x = 12
+window-padding-y = 8
+window-padding-balance = true
+
 background-opacity = 0.95
 background-blur = 10
 macos-titlebar-style = tabs
