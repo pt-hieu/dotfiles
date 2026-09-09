@@ -46,6 +46,8 @@ Primary terminal (macOS). Ported from `wezterm.lua`: Aura Dark palette, Cascadia
 
 Ghostty has no scripting layer, so the status bar (weather/battery/date) and tab-bar colors have no equivalent. Validate changes with `ghostty +validate-config`.
 
+New shells start via `login -fp`, so macOS prints a `Last login:` banner; `install.sh` creates `~/.hushlogin` to silence it.
+
 Requires `brew install --cask font-cascadia-code-nf` (Nerd Font build, needed for powerlevel10k glyphs). Italics live in a separate `Cascadia Code NF Italic` family and must be named explicitly.
 
 ### wezterm/wezterm.lua
