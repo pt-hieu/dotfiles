@@ -42,7 +42,7 @@ Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit wit
 
 ### ghostty/config
 
-Primary terminal (macOS). Ported from `wezterm.lua`: Aura Dark palette, Cascadia Code NF at 14pt, 0.95 opacity + blur, and the split/scroll/resize keybinds. The window size is ghostty's default, not a fixed cell geometry. Ghostty's own macOS defaults already cover `cmd+d`/`cmd+shift+d` splits, `cmd+[`/`cmd+]` navigation, and the `cmd+arrow`/`cmd+backspace` line editing, so only overrides are declared.
+Primary terminal (macOS). Ported from `wezterm.lua`: Aura Dark palette, Cascadia Code NF at 14pt, 0.23 opacity + blur, and the split/scroll/resize keybinds. The window size is ghostty's default, not a fixed cell geometry. Ghostty's own macOS defaults already cover `cmd+d`/`cmd+shift+d` splits, `cmd+[`/`cmd+]` navigation, and the `cmd+arrow`/`cmd+backspace` line editing, so only overrides are declared.
 
 Ghostty has no scripting layer, so the status bar (weather/battery/date) and tab-bar colors have no equivalent. Validate changes with `ghostty +validate-config`.
 
