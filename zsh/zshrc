@@ -171,6 +171,45 @@ function mm() {
   git pull origin main
 }
 
+# Main repo root, resolved through the shared .git dir so it is the same from
+# inside any of its worktrees.
+function repo_root() {
+  local git_common_dir
+  git_common_dir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || return 1
+  echo "${git_common_dir:h}"
+}
+
+# Jump between the Claude Code worktrees in <repo>/.claude/worktrees.
+#   wt          go to the main repo root
+#   wt card     go to the worktree whose name contains "card"
+function wt() {
+  local root
+  root=$(repo_root) || { echo "wt: not in a git repo" >&2; return 1 }
+  [[ -z "$1" ]] && { cd "$root"; return }
+
+  local worktrees_dir="$root/.claude/worktrees"
+  if [[ -d "$worktrees_dir/$1" ]]; then
+    cd "$worktrees_dir/$1"
+    return
+  fi
+
+  local matches=("$worktrees_dir"/*$1*(N/))
+  case ${#matches} in
+    0) echo "wt: no worktree matching '$1'" >&2; return 1 ;;
+    1) cd "${matches[1]}" ;;
+    *) echo "wt: '$1' matches several worktrees:" >&2
+       printf '  %s\n' "${matches[@]:t}" >&2
+       return 1 ;;
+  esac
+}
+
+function _wt() {
+  local root
+  root=$(repo_root) || return 1
+  compadd -- "$root"/.claude/worktrees/*(N/:t)
+}
+compdef _wt wt
+
 # =============================================================================
 # Functions: Dev Tools
 # =============================================================================
