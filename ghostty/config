@@ -74,3 +74,8 @@ keybind = alt+h=resize_split:left,15
 keybind = alt+j=resize_split:down,15
 keybind = alt+k=resize_split:up,15
 keybind = alt+l=resize_split:right,15
+
+# Updates
+# The channel defaults to whatever build is running; stable would pin this
+# install to tagged releases.
+auto-update-channel = tip
