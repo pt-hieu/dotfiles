@@ -14,6 +14,8 @@ Personal dotfiles for Brian Pham. Manages shell, terminal, and git configuration
 
 Symlink targets:
 - `ghostty/config` → `~/.config/ghostty/config`
+- `ghostty/themes/aura-dark-wezterm` → `~/.config/ghostty/themes/aura-dark-wezterm`
+- `rex/init.lua` → `~/.config/rex/init.lua`
 - `wezterm/wezterm.lua` → `~/.wezterm.lua`
 - `zsh/zshrc` → `~/.zshrc`
 - `zsh/p10k.zsh` → `~/.p10k.zsh`
@@ -42,13 +44,25 @@ Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit wit
 
 ### ghostty/config
 
-Primary terminal (macOS). Ported from `wezterm.lua`: Aura Dark palette, Cascadia Code NF at 14pt, 0.23 opacity + blur, and the split/scroll/resize keybinds. The window size is ghostty's default, not a fixed cell geometry. Ghostty's own macOS defaults already cover `cmd+d`/`cmd+shift+d` splits, `cmd+[`/`cmd+]` navigation, and the `cmd+arrow`/`cmd+backspace` line editing, so only overrides are declared.
+Terminal (macOS). Ported from `wezterm.lua`: Aura Dark palette (in `ghostty/themes/aura-dark-wezterm`, loaded with `theme =` and shared with Rex), Cascadia Code NF at 14pt, 0.23 opacity + blur, and the split/scroll/resize keybinds. The window size is ghostty's default, not a fixed cell geometry. Ghostty's own macOS defaults already cover `cmd+d`/`cmd+shift+d` splits, `cmd+[`/`cmd+]` navigation, and the `cmd+arrow`/`cmd+backspace` line editing, so only overrides are declared.
 
 Ghostty has no scripting layer, so the status bar (weather/battery/date) and tab-bar colors have no equivalent. Validate changes with `ghostty +validate-config`.
 
 New shells start via `login -fp`, so macOS prints a `Last login:` banner; `install.sh` creates `~/.hushlogin` to silence it.
 
 Requires `brew install --cask font-cascadia-code-nf` (Nerd Font build, needed for powerlevel10k glyphs). Italics live in a separate `Cascadia Code NF Italic` family and must be named explicitly.
+
+### rex/init.lua
+
+Rex config (Lua), ported from `ghostty/config`. It holds the keybinds: splits,
+pane focus and resize, `cmd+arrow`/`cmd+backspace` line editing, and
+`shift+enter` typing `\x1b\r` through a `type_text` action that writes to the
+focused terminal. Validate with `rex config check` and apply with
+`rex config reload`; `rex keymap` shows what the server loaded.
+
+Colors and font are app settings that live in the Rex app. The palette comes
+from importing `ghostty/themes/aura-dark-wezterm` (command palette → Import
+Theme File).
 
 ### wezterm/wezterm.lua
 

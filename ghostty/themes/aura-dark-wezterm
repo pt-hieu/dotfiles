@@ -1,0 +1,31 @@
+# Aura Dark — custom scheme copied from the wezterm color_schemes table.
+# Ghostty's built-in `Aura Dark` theme is a different palette.
+# Ghostty loads this as `theme = aura-dark-wezterm`; Rex imports it with
+# `client.theme.import` (see rex/init.lua).
+background = #15141b
+foreground = #edecee
+
+palette = 0=#15141b
+palette = 1=#ff6767
+palette = 2=#61ffca
+palette = 3=#ffca85
+palette = 4=#a277ff
+palette = 5=#a277ff
+palette = 6=#61ffca
+palette = 7=#edecee
+palette = 8=#6d6d6d
+palette = 9=#ff6767
+palette = 10=#61ffca
+palette = 11=#ffca85
+palette = 12=#a277ff
+palette = 13=#a277ff
+palette = 14=#61ffca
+palette = 15=#edecee
+
+cursor-color = #a277ff
+# Matches wezterm's cursor_fg; the glyph under the block cursor is hidden.
+# Set to #15141b if you want it readable instead.
+cursor-text = #a277ff
+
+selection-background = #29263c
+selection-foreground = #edecee

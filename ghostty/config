@@ -9,35 +9,8 @@ font-family-italic = Cascadia Code NF Italic
 font-family-bold-italic = Cascadia Code NF Italic
 font-size = 14
 
-# Aura Dark — custom scheme copied from the wezterm color_schemes table.
-# (There is a built-in `theme = Aura`, but it is a different palette.)
-background = #15141b
-foreground = #edecee
-
-palette = 0=#15141b
-palette = 1=#ff6767
-palette = 2=#61ffca
-palette = 3=#ffca85
-palette = 4=#a277ff
-palette = 5=#a277ff
-palette = 6=#61ffca
-palette = 7=#edecee
-palette = 8=#6d6d6d
-palette = 9=#ff6767
-palette = 10=#61ffca
-palette = 11=#ffca85
-palette = 12=#a277ff
-palette = 13=#a277ff
-palette = 14=#61ffca
-palette = 15=#edecee
-
-cursor-color = #a277ff
-# Matches wezterm's cursor_fg; the glyph under the block cursor is hidden.
-# Set to #15141b if you want it readable instead.
-cursor-text = #a277ff
-
-selection-background = #29263c
-selection-foreground = #edecee
+# Aura Dark, shared with Rex: themes/aura-dark-wezterm
+theme = aura-dark-wezterm
 
 # Splits — wezterm desaturated the inactive pane (inactive_pane_hsb);
 # ghostty can only dim it.

@@ -37,6 +37,10 @@ link "$DOTFILES_DIR/wezterm/wezterm.lua" ~/.wezterm.lua
 
 # Ghostty
 link "$DOTFILES_DIR/ghostty/config" ~/.config/ghostty/config
+link "$DOTFILES_DIR/ghostty/themes/aura-dark-wezterm" ~/.config/ghostty/themes/aura-dark-wezterm
+
+# Rex
+link "$DOTFILES_DIR/rex/init.lua" ~/.config/rex/init.lua
 
 # Zsh
 link "$DOTFILES_DIR/zsh/zshrc" ~/.zshrc
