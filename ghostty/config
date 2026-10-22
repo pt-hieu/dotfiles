@@ -53,7 +53,7 @@ window-padding-x = 12
 window-padding-y = 8
 window-padding-balance = true
 
-background-opacity = 0.42
+background-opacity = 0.85
 background-blur = 30
 macos-titlebar-style = tabs
 
