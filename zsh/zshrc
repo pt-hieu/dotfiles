@@ -293,3 +293,6 @@ function hogs() {
 # P10k Config (must stay at bottom)
 # =============================================================================
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# bun completions
+[ -s "/Users/brian/.bun/_bun" ] && source "/Users/brian/.bun/_bun"
