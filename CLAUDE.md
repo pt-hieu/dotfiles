@@ -62,7 +62,8 @@ focused terminal. Validate with `rex config check` and apply with
 
 Colors and font are app settings that live in the Rex app. The palette comes
 from importing `ghostty/themes/aura-dark-wezterm` (command palette → Import
-Theme File).
+Theme File). `rex/MANUAL_SETUP.md` lists every setting made by hand in the
+GUI, to move into config once Rex supports it.
 
 ### wezterm/wezterm.lua
 
