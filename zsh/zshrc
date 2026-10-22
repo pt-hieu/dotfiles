@@ -49,6 +49,12 @@ export PATH="$PATH:$HOME/.local/bin"
 # WezTerm (macOS only)
 [[ -d /Applications/WezTerm.app/Contents/MacOS ]] && export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
 
+# curl and git CA bundle (macOS only): Homebrew's bundle rejects the compromised eMudhra intermediates that /etc/ssl/cert.pem still trusts
+if [[ -f /opt/homebrew/etc/ca-certificates/cert.pem ]]; then
+  export CURL_CA_BUNDLE="/opt/homebrew/etc/ca-certificates/cert.pem"
+  export GIT_SSL_CAINFO="/opt/homebrew/etc/ca-certificates/cert.pem"
+fi
+
 # Claude Code MCP CLI
 export ENABLE_EXPERIMENTAL_MCP_CLI=true
 
