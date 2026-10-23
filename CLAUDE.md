@@ -42,6 +42,18 @@ Shell config with cross-platform support (macOS/Linux branching for paths and pl
 
 Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `wt` (cd to a `.claude/worktrees` entry by fuzzy name, or the repo root with no argument; tab-completes), `n` (nvim), `zzz` (sleep when Claude Code is idle), `hogs` (find/kill runaway CPU processes).
 
+### zsh/p10k.zsh
+
+Hand-written Powerlevel10k config: lean single-line style, transparent
+background, transient prompt. Left side is `dir`, `vcs`, `prompt_char`; the
+right side lists the segments for tools installed here. `my_git_formatter`
+builds the `vcs` text. A segment added to the element lists draws with p10k's
+default colours until it gets its own style block. Running `p10k configure`
+overwrites this file with the wizard output.
+
+Check a change by loading it in a bare shell, which skips the startup files:
+`zsh -f -c 'source zsh/p10k.zsh; typeset -m "POWERLEVEL9K_*"'`.
+
 ### ghostty/config
 
 Terminal (macOS). Ported from `wezterm.lua`: Aura Dark palette (in `ghostty/themes/aura-dark-wezterm`, loaded with `theme =` and shared with Rex), Cascadia Code NF at 14pt, 0.23 opacity + blur, and the split/scroll/resize keybinds. The window size is ghostty's default, not a fixed cell geometry. Ghostty's own macOS defaults already cover `cmd+d`/`cmd+shift+d` splits, `cmd+[`/`cmd+]` navigation, and the `cmd+arrow`/`cmd+backspace` line editing, so only overrides are declared.
