@@ -47,7 +47,9 @@ Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit wit
 Hand-written Powerlevel10k config: lean single-line style, transparent
 background, transient prompt. Left side is `dir`, `vcs`, `prompt_char`; the
 right side lists the segments for tools installed here. `my_git_formatter`
-builds the `vcs` text. A segment added to the element lists draws with p10k's
+builds the `vcs` text. Colours come from the `my_aura` table at the top, the
+Aura Dark palette in truecolor hex; set a segment's colour with
+`$my_aura[name]`. A segment added to the element lists draws with p10k's
 default colours until it gets its own style block. Running `p10k configure`
 overwrites this file with the wizard output.
 

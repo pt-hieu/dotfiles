@@ -12,6 +12,19 @@
   unset -m '(POWERLEVEL9K_*|DEFAULT_USER)~POWERLEVEL9K_GITSTATUS_DIR'
   [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]] || return
 
+  # Aura Dark, the palette in ghostty/themes/aura-dark-wezterm plus Aura's
+  # blue and pink. Global so my_git_formatter can read it at prompt time.
+  typeset -gA my_aura=(
+    purple '#a277ff'
+    green  '#61ffca'
+    orange '#ffca85'
+    blue   '#82e2ff'
+    pink   '#f694ff'
+    red    '#ff6767'
+    grey   '#6d6d6d'
+    white  '#edecee'
+  )
+
   # ── Layout ────────────────────────────────────────────────────────────────
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     dir
@@ -49,8 +62,8 @@
   typeset -g POWERLEVEL9K_SHOW_RULER=false
 
   # ── prompt_char: ❯ in insert mode, ❮ in command mode, red after a failure ──
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=76
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=196
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$my_aura[green]
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=$my_aura[red]
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='❯'
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION='❮'
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIVIS_CONTENT_EXPANSION='V'
@@ -60,9 +73,9 @@
   typeset -g POWERLEVEL9K_PROMPT_CHAR_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL=
 
   # ── dir: shortened to unique prefixes, project roots kept in full ─────────
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=31
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=103
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=39
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=$my_aura[purple]
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=$my_aura[grey]
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=$my_aura[purple]
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
@@ -93,10 +106,10 @@
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
   typeset -g POWERLEVEL9K_VCS_PREFIX='%fon '
   typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_EXPANSION=
-  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_COLOR=76
-  typeset -g POWERLEVEL9K_VCS_LOADING_VISUAL_IDENTIFIER_COLOR=244
-  typeset -g POWERLEVEL9K_VCS_{CLEAN,UNTRACKED}_FOREGROUND=76
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=178
+  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_COLOR=$my_aura[green]
+  typeset -g POWERLEVEL9K_VCS_LOADING_VISUAL_IDENTIFIER_COLOR=$my_aura[grey]
+  typeset -g POWERLEVEL9K_VCS_{CLEAN,UNTRACKED}_FOREGROUND=$my_aura[green]
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=$my_aura[orange]
   typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=-1
   typeset -g POWERLEVEL9K_VCS_{STAGED,UNSTAGED,UNTRACKED,CONFLICTED,COMMITS_AHEAD,COMMITS_BEHIND}_MAX_NUM=-1
   typeset -g POWERLEVEL9K_VCS_DISABLED_WORKDIR_PATTERN='~'
@@ -116,12 +129,13 @@
 
     if (( $1 )); then
       local       meta='%f'
-      local      clean='%76F'
-      local   modified='%178F'
-      local  untracked='%39F'
-      local conflicted='%196F'
+      local      clean="%F{$my_aura[green]}"
+      local   modified="%F{$my_aura[orange]}"
+      local  untracked="%F{$my_aura[blue]}"
+      local conflicted="%F{$my_aura[red]}"
     else
-      local meta='%244F' clean='%244F' modified='%244F' untracked='%244F' conflicted='%244F'
+      local meta="%F{$my_aura[grey]}"
+      local clean=$meta modified=$meta untracked=$meta conflicted=$meta
     fi
 
     local res
@@ -177,29 +191,29 @@
   typeset -g POWERLEVEL9K_STATUS_EXTENDED_STATES=true
   typeset -g POWERLEVEL9K_STATUS_OK=false
   typeset -g POWERLEVEL9K_STATUS_OK_PIPE=true
-  typeset -g POWERLEVEL9K_STATUS_OK_PIPE_FOREGROUND=70
+  typeset -g POWERLEVEL9K_STATUS_OK_PIPE_FOREGROUND=$my_aura[green]
   typeset -g POWERLEVEL9K_STATUS_OK_PIPE_VISUAL_IDENTIFIER_EXPANSION='✔'
   typeset -g POWERLEVEL9K_STATUS_ERROR=false
   typeset -g POWERLEVEL9K_STATUS_ERROR_SIGNAL=true
   typeset -g POWERLEVEL9K_STATUS_ERROR_PIPE=true
-  typeset -g POWERLEVEL9K_STATUS_ERROR_{SIGNAL,PIPE}_FOREGROUND=160
+  typeset -g POWERLEVEL9K_STATUS_ERROR_{SIGNAL,PIPE}_FOREGROUND=$my_aura[red]
   typeset -g POWERLEVEL9K_STATUS_ERROR_{SIGNAL,PIPE}_VISUAL_IDENTIFIER_EXPANSION='✘'
   typeset -g POWERLEVEL9K_STATUS_VERBOSE_SIGNAME=false
 
   # ── command_execution_time: commands that take 3s or more ─────────────────
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=3
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=0
-  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=101
+  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=$my_aura[orange]
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FORMAT='d h m s'
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_VISUAL_IDENTIFIER_EXPANSION=
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_PREFIX='%ftook '
 
   # ── background_jobs ───────────────────────────────────────────────────────
   typeset -g POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE=false
-  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND=70
+  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND=$my_aura[green]
 
   # ── virtualenv: active Python venv name ───────────────────────────────────
-  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=37
+  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=$my_aura[blue]
   typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=false
   typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_WITH_PYENV=false
   typeset -g POWERLEVEL9K_VIRTUALENV_{LEFT,RIGHT}_DELIMITER=
@@ -207,18 +221,18 @@
   # ── aws: profile and region, while typing a command that uses them ────────
   typeset -g POWERLEVEL9K_AWS_SHOW_ON_COMMAND='aws|awless|cdk|terraform|pulumi|terragrunt'
   typeset -g POWERLEVEL9K_AWS_CLASSES=('*' DEFAULT)
-  typeset -g POWERLEVEL9K_AWS_DEFAULT_FOREGROUND=208
+  typeset -g POWERLEVEL9K_AWS_DEFAULT_FOREGROUND=$my_aura[orange]
   typeset -g POWERLEVEL9K_AWS_CONTENT_EXPANSION='${P9K_AWS_PROFILE//\%/%%}${P9K_AWS_REGION:+ ${P9K_AWS_REGION//\%/%%}}'
 
   # ── terraform: workspace, when it is something other than default ─────────
   typeset -g POWERLEVEL9K_TERRAFORM_SHOW_DEFAULT=false
   typeset -g POWERLEVEL9K_TERRAFORM_CLASSES=('*' OTHER)
-  typeset -g POWERLEVEL9K_TERRAFORM_OTHER_FOREGROUND=38
+  typeset -g POWERLEVEL9K_TERRAFORM_OTHER_FOREGROUND=$my_aura[pink]
 
   # ── context: user@host over SSH or as root ────────────────────────────────
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=178
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=180
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=180
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=$my_aura[red]
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=$my_aura[white]
+  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=$my_aura[white]
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B%n@%m'
   typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n@%m'
   typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%m'
@@ -226,7 +240,7 @@
   typeset -g POWERLEVEL9K_CONTEXT_PREFIX='%fwith '
 
   # ── vim_shell: inside :sh from vim ────────────────────────────────────────
-  typeset -g POWERLEVEL9K_VIM_SHELL_FOREGROUND=34
+  typeset -g POWERLEVEL9K_VIM_SHELL_FOREGROUND=$my_aura[green]
 
   (( ! $+functions[p10k] )) || p10k reload
 }
