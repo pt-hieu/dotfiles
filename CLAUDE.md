@@ -67,11 +67,10 @@ Requires `brew install --cask font-cascadia-code-nf` (Nerd Font build, needed fo
 
 ### rex/init.lua
 
-Rex config (Lua), ported from `ghostty/config`. It holds the keybinds: splits,
-pane focus and resize, `cmd+arrow`/`cmd+backspace` line editing, and
-`shift+enter` typing `\x1b\r` through a `type_text` action that writes to the
-focused terminal. Validate with `rex config check` and apply with
-`rex config reload`; `rex keymap` shows what the server loaded.
+Rex config (Lua). It binds no keys: Rex's default shortcuts cover the splits,
+pane focus, line editing and `shift+enter`. The `alt+hjkl` pane resizing from
+`ghostty/config` was dropped on purpose. Validate with `rex config check` and
+apply with `rex config reload`; `rex keymap` shows what the server loaded.
 
 Colors and font are app settings that live in the Rex app. The palette comes
 from importing `ghostty/themes/aura-dark-wezterm` (command palette → Import

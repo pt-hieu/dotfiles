@@ -41,7 +41,5 @@ Port these from `ghostty/config` when Rex adds them:
 - `background-opacity = 0.85` and `background-blur = 30` (feature request
   deferred)
 - `super+up` / `super+down` scroll to the top and bottom of scrollback
-- `alt+hjkl` resize step of 15 (Rex's `pane.resize` `amount` unit is
-  undocumented, so the binding uses Rex's default step)
 - `split-divider-color = #a277ff`
 - `window-padding-x = 12`, `window-padding-y = 8`, `window-padding-balance`
