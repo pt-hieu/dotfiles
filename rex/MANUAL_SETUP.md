@@ -24,13 +24,13 @@ The CLI equivalent needs **Remote Control** on in Settings → Rex Server:
 rex -C <client> do client.theme.import path=$HOME/.config/ghostty/themes/aura-dark-wezterm
 ```
 
-## Font: Cascadia Code NF, 13.5pt
+## Font: Cascadia Code NF, 14pt
 
-Settings → Terminal → font **Cascadia Code NF**, size **13.5**. The font comes
+Settings → Terminal → font **Cascadia Code NF**, size **14**. The font comes
 from `brew install --cask font-cascadia-code-nf`.
 
 Stored as `Workspace.terminalFontName` = `Cascadia Code NF` and
-`Workspace.terminalFontPointSize` = `13.5`. These keys come from the app's
+`Workspace.terminalFontPointSize` = `14`. These keys come from the app's
 binary and are undocumented; `defaults write` with Rex quit is the unsupported
 scripted route.
 
