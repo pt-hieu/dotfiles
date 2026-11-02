@@ -51,7 +51,6 @@ link "$DOTFILES_DIR/git/gitconfig" ~/.gitconfig
 
 # Scripts
 link "$DOTFILES_DIR/scripts/claude-idle-sleep.sh" ~/.local/bin/claude-idle-sleep
-link "$DOTFILES_DIR/scripts/cpu-hogs.sh" ~/.local/bin/cpu-hogs
 
 # macOS `login` prints "Last login: ..." on every new shell unless this exists.
 if [ "$(uname)" = "Darwin" ] && [ ! -e ~/.hushlogin ]; then
