@@ -21,6 +21,7 @@ Symlink targets:
 - `zsh/p10k.zsh` → `~/.p10k.zsh`
 - `git/gitconfig` → `~/.gitconfig`
 - `scripts/claude-idle-sleep.sh` → `~/.local/bin/claude-idle-sleep`
+- `scripts/rex-history-pick.sh` → `~/.local/bin/rex-history-pick`
 
 ## Architecture
 
@@ -67,10 +68,18 @@ Requires `brew install --cask font-cascadia-code-nf` (Nerd Font build, needed fo
 
 ### rex/init.lua
 
-Rex config (Lua). It binds no keys: Rex's default shortcuts cover the splits,
-pane focus, line editing and `shift+enter`. The `alt+hjkl` pane resizing from
-`ghostty/config` was dropped on purpose. Validate with `rex config check` and
-apply with `rex config reload`; `rex keymap` shows what the server loaded.
+Rex config (Lua). Rex's default shortcuts cover the splits, pane focus, line
+editing and `shift+enter`. The `alt+hjkl` pane resizing from `ghostty/config`
+was dropped on purpose. It binds two keys of its own:
+
+- `cmd+r` (`history_search`) opens a floating pane labelled `history` that runs
+  `scripts/rex-history-pick.sh` on the pane you came from.
+- `cmd+enter` (`history_run_or_split`) sends `ctrl-x` to fzf when that
+  `history` pane has focus, so the pick runs. Anywhere else it queues the
+  default `pane.split.auto`. The label is how the action tells the picker apart.
+
+Validate with `rex config check` and apply with `rex config reload`;
+`rex keymap` shows what the server loaded.
 
 Colors and font are app settings that live in the Rex app. The palette comes
 from importing `ghostty/themes/aura-dark-wezterm` (command palette → Import
@@ -116,6 +125,15 @@ Two details that are easy to get wrong:
 - The already-asleep check parses `pmset -g log`, which takes ~7s, so it only
   runs after the cheap guards pass. It exists because a scheduled DarkWake
   (maintenance, RTC, push) would otherwise be cut short by another sleep.
+
+### scripts/rex-history-pick.sh
+
+The picker behind `cmd+r` in Rex. Needs `brew install fzf`. It reads
+`$HISTFILE` (default `~/.zsh_history`) directly, rebuilding multi-line entries
+and stripping `EXTENDED_HISTORY` prefixes. It does not use `fc -R`, which hangs
+in a bare zsh. Entries come newest first with duplicates dropped, and are passed
+to fzf as NUL-separated records. `Enter` types the pick into the origin pane
+with `rex send`. `ctrl-x` (sent by Rex for `cmd+enter`) also adds `\r` to run it.
 
 ## Conventions
 
