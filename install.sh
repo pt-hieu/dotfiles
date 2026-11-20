@@ -1,5 +1,6 @@
 #!/bin/bash
-# Symlink dotfiles to home directory. Safe to re-run.
+# Symlink dotfiles to home directory, and on macOS build Rex Markdown.app.
+# Safe to re-run.
 
 set -euo pipefail
 
@@ -52,6 +53,11 @@ link "$DOTFILES_DIR/git/gitconfig" ~/.gitconfig
 # Scripts
 link "$DOTFILES_DIR/scripts/claude-idle-sleep.sh" ~/.local/bin/claude-idle-sleep
 link "$DOTFILES_DIR/scripts/rex-history-pick.sh" ~/.local/bin/rex-history-pick
+
+# Rex Markdown.app: Cmd-clicked .md files open in nvim in a Rex pane.
+if [ "$(uname)" = "Darwin" ]; then
+  "$DOTFILES_DIR/rex/md-opener/build.sh"
+fi
 
 # macOS `login` prints "Last login: ..." on every new shell unless this exists.
 if [ "$(uname)" = "Darwin" ] && [ ! -e ~/.hushlogin ]; then

@@ -23,6 +23,9 @@ Symlink targets:
 - `scripts/claude-idle-sleep.sh` → `~/.local/bin/claude-idle-sleep`
 - `scripts/rex-history-pick.sh` → `~/.local/bin/rex-history-pick`
 
+On macOS it also builds `~/Applications/Rex Markdown.app` from `rex/md-opener/`
+and makes it the default app for Markdown files.
+
 ## Architecture
 
 Each tool gets its own directory with a single config file. The install script symlinks them to where each tool expects its config.
@@ -85,6 +88,26 @@ Colors and font are app settings that live in the Rex app. The palette comes
 from importing `ghostty/themes/aura-dark-wezterm` (command palette → Import
 Theme File). `rex/MANUAL_SETUP.md` lists every setting made by hand in the
 GUI, to move into config once Rex supports it.
+
+### rex/md-opener/
+
+`Rex Markdown.app`, the default macOS app for `.md` files, so Cmd-clicking a
+Markdown path in Rex opens it in nvim. Rex hands file links to the macOS
+default app and has no link-handler hook of its own, which is why this is an
+app. Needs `brew install duti`.
+
+- `main.applescript` takes the files macOS opens and passes them to
+  `open-in-rex.sh`, copied into the app's Resources.
+- `open-in-rex.sh` runs `rex split -- nvim FILE` next to the focused pane of
+  the session the Rex app shows. If the app isn't connected, it launches Rex
+  and waits up to 10 s, then falls back to TextEdit.
+- `build.sh` compiles the app with `osacompile`, sets its bundle ID
+  (`dev.brianpham.rex-md-opener`) and document types with PlistBuddy, signs
+  it ad hoc, registers it, and sets it as the `.md` default with `duti`.
+
+The server doesn't say which session the app has on screen, so with several
+sessions open the file goes to the first one the app is attached to. After
+editing the script, re-run `build.sh`; the app holds a copy.
 
 ### wezterm/wezterm.lua
 
