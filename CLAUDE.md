@@ -43,7 +43,7 @@ Shell config with cross-platform support (macOS/Linux branching for paths and pl
 8. **Functions** — git shortcuts, dev tools, worktrees, AI launchers, utilities
 9. **P10k config** (must stay at bottom)
 
-Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `wt` (cd to a `.claude/worktrees` entry by fuzzy name, or the repo root with no argument; tab-completes), `n` (nvim), `zzz` (sleep when Claude Code is idle).
+Key shell functions: `br` (current branch), `aa` (git add all), `cm` (commit with Jira ticket from branch), `cmm` (amend), `co` (checkout by fuzzy name), `push`/`pull` (to current branch), `wt` (cd to a `.claude/worktrees` entry by fuzzy name, or the repo root with no argument; tab-completes), `n` (nvim), `zzz` (sleep when Claude Code is idle), `soloclaude` (Claude on Opus, told to work without subagents).
 
 ### zsh/p10k.zsh
 

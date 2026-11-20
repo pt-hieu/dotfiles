@@ -245,6 +245,13 @@ function zzz() {
   esac
 }
 
+# Claude on Opus in solo mode: it works directly, without delegating to subagents.
+#   soloclaude      start a session
+#   soloclaude -c   any claude flags pass through
+function soloclaude() {
+  claude --model opus --append-system-prompt "This session is in solo mode, which replaces the coordinator rule in ~/.claude/CLAUDE.md. Do the exploration, implementation, review, and verification yourself, because Brian started this session to follow the work in one conversation and to skip the cost of subagents. Use a subagent only when he asks for one, or when a search covers more of the codebase than you can read directly." "$@"
+}
+
 # =============================================================================
 # Functions: Utilities
 # =============================================================================
