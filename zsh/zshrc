@@ -287,3 +287,6 @@ function n() {
 
 # bun completions
 [ -s "/Users/brian/.bun/_bun" ] && source "/Users/brian/.bun/_bun"
+
+# Homebrew: no implicit "brew update" before install/upgrade
+export HOMEBREW_NO_AUTO_UPDATE=1
